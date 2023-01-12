@@ -1,0 +1,895 @@
+---
+title: "230102_gasvoorhanden_In_EUropa"
+author: "Robbe Van Molle"
+date: "2023-01-02"
+output: html_document
+---
+
+```{r}
+# Installeer de jsonlite library als je deze nog niet hebt
+#install.packages("jsonlite")
+
+# Laad de jsonlite library
+library(jsonlite)
+library(dplyr)
+library(stringr)
+library(tidyr)
+
+
+# Lees het JSON-bestand in R
+json_data_EU <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&continent=EU&page=1")
+json_data_EU_FULL = data.frame(json_data_EU, stringsAsFactors = FALSE)
+
+json_data_EU_FULL <- select(json_data_EU_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_EU_FULL
+json_data_EU_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_EU_FULL$data.gasDayStart, '-', 3)
+json_data_EU_FULL$Maand_Dag <- paste(json_data_EU_FULL$Maand, json_data_EU_FULL$Dag, sep = "-")
+
+json_data_EU_FULL <- select(json_data_EU_FULL, -Maand, -Dag)
+
+json_data_EU_FILLTER <- select(json_data_EU_FULL, -data.name, -data.gasDayStart)
+
+EU <- spread(json_data_EU_FILLTER, key = Jaar, value = data.full)
+EU$`2011` <- as.numeric(EU$`2011`)
+EU$`2012` <- as.numeric(EU$`2012`)
+EU$`2013` <- as.numeric(EU$`2013`)
+EU$`2014` <- as.numeric(EU$`2014`)
+EU$`2015` <- as.numeric(EU$`2015`)
+EU$`2016` <- as.numeric(EU$`2016`)
+EU$`2017` <- as.numeric(EU$`2017`)
+EU$`2018` <- as.numeric(EU$`2018`)
+EU$`2019` <- as.numeric(EU$`2019`)
+EU$`2020` <- as.numeric(EU$`2020`)
+EU$`2021` <- as.numeric(EU$`2021`)
+EU$`2022` <- as.numeric(EU$`2022`)
+EU$`2023` <- as.numeric(EU$`2023`)
+
+
+EU$Historical_Min <- apply(EU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+EU$Historical_Max <- apply(EU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+EU$Historical_Mean <- apply(EU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+EU$Naam <- rep("EU", nrow(EU))
+
+EU
+
+
+#setwd("C:/Users/reve03/OneDrive - Mediahuis/Documents/PRIV/PORTFOLIO/R/230102_gasvoorhanden_In_EUropa/DATA")
+# Schrijf de data naar een CSV-bestand
+write.csv(EU, file = "EU_FILTER.csv")
+
+```
+```{r}
+# Lees het JSON-bestand in R
+json_data_BE <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=BE&page=1")
+json_data_BE_FULL = data.frame(json_data_BE, stringsAsFactors = FALSE)
+
+json_data_BE_FULL <- select(json_data_BE_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_BE_FULL
+json_data_BE_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_BE_FULL$data.gasDayStart, '-', 3)
+json_data_BE_FULL$Maand_Dag <- paste(json_data_BE_FULL$Maand, json_data_BE_FULL$Dag, sep = "-")
+
+json_data_BE_FULL <- select(json_data_BE_FULL, -Maand, -Dag)
+
+json_data_BE_FILLTER <- select(json_data_BE_FULL, -data.name, -data.gasDayStart)
+
+BE <- spread(json_data_BE_FILLTER, key = Jaar, value = data.full)
+BE$`2011` <- as.numeric(BE$`2011`)
+BE$`2012` <- as.numeric(BE$`2012`)
+BE$`2013` <- as.numeric(BE$`2013`)
+BE$`2014` <- as.numeric(BE$`2014`)
+BE$`2015` <- as.numeric(BE$`2015`)
+BE$`2016` <- as.numeric(BE$`2016`)
+BE$`2017` <- as.numeric(BE$`2017`)
+BE$`2018` <- as.numeric(BE$`2018`)
+BE$`2019` <- as.numeric(BE$`2019`)
+BE$`2020` <- as.numeric(BE$`2020`)
+BE$`2021` <- as.numeric(BE$`2021`)
+BE$`2022` <- as.numeric(BE$`2022`)
+BE$`2023` <- as.numeric(BE$`2023`)
+
+
+BE$Historical_Min <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+BE$Historical_Max <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+BE$Historical_Mean <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+BE$Naam <- rep("BE", nrow(BE))
+
+
+BE
+
+# Schrijf de data naar een CSV-bestand
+write.csv(BE, file = "BE_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_AT <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=AT&page=1")
+json_data_AT_FULL = data.frame(json_data_AT, stringsAsFactors = FALSE)
+
+json_data_AT_FULL <- select(json_data_AT_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_AT_FULL
+json_data_AT_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_AT_FULL$data.gasDayStart, '-', 3)
+json_data_AT_FULL$Maand_Dag <- paste(json_data_AT_FULL$Maand, json_data_AT_FULL$Dag, sep = "-")
+
+json_data_AT_FULL <- select(json_data_AT_FULL, -Maand, -Dag)
+
+json_data_AT_FILLTER <- select(json_data_AT_FULL, -data.name, -data.gasDayStart)
+
+AT <- spread(json_data_AT_FILLTER, key = Jaar, value = data.full)
+AT$`2011` <- as.numeric(AT$`2011`)
+AT$`2012` <- as.numeric(AT$`2012`)
+AT$`2013` <- as.numeric(AT$`2013`)
+AT$`2014` <- as.numeric(AT$`2014`)
+AT$`2015` <- as.numeric(AT$`2015`)
+AT$`2016` <- as.numeric(AT$`2016`)
+AT$`2017` <- as.numeric(AT$`2017`)
+AT$`2018` <- as.numeric(AT$`2018`)
+AT$`2019` <- as.numeric(AT$`2019`)
+AT$`2020` <- as.numeric(AT$`2020`)
+AT$`2021` <- as.numeric(AT$`2021`)
+AT$`2022` <- as.numeric(AT$`2022`)
+AT$`2023` <- as.numeric(AT$`2023`)
+
+
+AT$Historical_Min <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+AT$Historical_Max <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+AT$Historical_Mean <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+AT$Naam <- rep("AT", nrow(AT))
+
+
+AT
+
+# Schrijf de data naar een CSV-ATstand
+write.csv(AT, file = "AT_FILTER.csv")
+```
+
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_BG <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=BG&page=1")
+json_data_BG_FULL = data.frame(json_data_BG, stringsAsFactors = FALSE)
+
+json_data_BG_FULL <- select(json_data_BG_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_BG_FULL
+json_data_BG_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_BG_FULL$data.gasDayStart, '-', 3)
+json_data_BG_FULL$Maand_Dag <- paste(json_data_BG_FULL$Maand, json_data_BG_FULL$Dag, sep = "-")
+
+json_data_BG_FULL <- select(json_data_BG_FULL, -Maand, -Dag)
+
+json_data_BG_FILLTER <- select(json_data_BG_FULL, -data.name, -data.gasDayStart)
+
+BG <- spread(json_data_BG_FILLTER, key = Jaar, value = data.full)
+BG$`2011` <- as.numeric(BG$`2011`)
+BG$`2012` <- as.numeric(BG$`2012`)
+BG$`2013` <- as.numeric(BG$`2013`)
+BG$`2014` <- as.numeric(BG$`2014`)
+BG$`2015` <- as.numeric(BG$`2015`)
+BG$`2016` <- as.numeric(BG$`2016`)
+BG$`2017` <- as.numeric(BG$`2017`)
+BG$`2018` <- as.numeric(BG$`2018`)
+BG$`2019` <- as.numeric(BG$`2019`)
+BG$`2020` <- as.numeric(BG$`2020`)
+BG$`2021` <- as.numeric(BG$`2021`)
+BG$`2022` <- as.numeric(BG$`2022`)
+BG$`2023` <- as.numeric(BG$`2023`)
+
+
+BG$Historical_Min <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+BG$Historical_Max <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+BG$Historical_Mean <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+BG$Naam <- rep("BG", nrow(BG))
+
+BG
+
+# Schrijf de data naar een CSV-ATstand
+write.csv(BG, file = "BG_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_CZ <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=CZ&page=1")
+json_data_CZ_FULL = data.frame(json_data_CZ, stringsAsFactors = FALSE)
+
+json_data_CZ_FULL <- select(json_data_CZ_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_CZ_FULL
+json_data_CZ_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_CZ_FULL$data.gasDayStart, '-', 3)
+json_data_CZ_FULL$Maand_Dag <- paste(json_data_CZ_FULL$Maand, json_data_CZ_FULL$Dag, sep = "-")
+
+json_data_CZ_FULL <- select(json_data_CZ_FULL, -Maand, -Dag)
+
+json_data_CZ_FILLTER <- select(json_data_CZ_FULL, -data.name, -data.gasDayStart)
+
+CZ <- spread(json_data_CZ_FILLTER, key = Jaar, value = data.full)
+CZ$`2011` <- as.numeric(CZ$`2011`)
+CZ$`2012` <- as.numeric(CZ$`2012`)
+CZ$`2013` <- as.numeric(CZ$`2013`)
+CZ$`2014` <- as.numeric(CZ$`2014`)
+CZ$`2015` <- as.numeric(CZ$`2015`)
+CZ$`2016` <- as.numeric(CZ$`2016`)
+CZ$`2017` <- as.numeric(CZ$`2017`)
+CZ$`2018` <- as.numeric(CZ$`2018`)
+CZ$`2019` <- as.numeric(CZ$`2019`)
+CZ$`2020` <- as.numeric(CZ$`2020`)
+CZ$`2021` <- as.numeric(CZ$`2021`)
+CZ$`2022` <- as.numeric(CZ$`2022`)
+CZ$`2023` <- as.numeric(CZ$`2023`)
+
+
+CZ$Historical_Min <- apply(CZ[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+CZ$Historical_Max <- apply(CZ[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+CZ$Historical_Mean <- apply(CZ[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+CZ$Naam <- rep("CZ", nrow(CZ))
+
+CZ
+
+# Schrijf de data naar een CSV-ATstand
+write.csv(CZ, file = "CZ_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_DE <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=DE&page=1")
+json_data_DE_FULL = data.frame(json_data_DE, stringsAsFactors = FALSE)
+
+json_data_DE_FULL <- select(json_data_DE_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_DE_FULL
+json_data_DE_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_DE_FULL$data.gasDayStart, '-', 3)
+json_data_DE_FULL$Maand_Dag <- paste(json_data_DE_FULL$Maand, json_data_DE_FULL$Dag, sep = "-")
+
+json_data_DE_FULL <- select(json_data_DE_FULL, -Maand, -Dag)
+
+json_data_DE_FILLTER <- select(json_data_DE_FULL, -data.name, -data.gasDayStart)
+
+DE <- spread(json_data_DE_FILLTER, key = Jaar, value = data.full)
+DE$`2011` <- as.numeric(DE$`2011`)
+DE$`2012` <- as.numeric(DE$`2012`)
+DE$`2013` <- as.numeric(DE$`2013`)
+DE$`2014` <- as.numeric(DE$`2014`)
+DE$`2015` <- as.numeric(DE$`2015`)
+DE$`2016` <- as.numeric(DE$`2016`)
+DE$`2017` <- as.numeric(DE$`2017`)
+DE$`2018` <- as.numeric(DE$`2018`)
+DE$`2019` <- as.numeric(DE$`2019`)
+DE$`2020` <- as.numeric(DE$`2020`)
+DE$`2021` <- as.numeric(DE$`2021`)
+DE$`2022` <- as.numeric(DE$`2022`)
+DE$`2023` <- as.numeric(DE$`2023`)
+
+
+DE$Historical_Min <- apply(DE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+DE$Historical_Max <- apply(DE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+DE$Historical_Mean <- apply(DE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+DE$Naam <- rep("DE", nrow(DE))
+
+DE
+
+# Schrijf de data naar een CSV-ATstand
+write.csv(DE, file = "DE_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_DK <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=DK&page=1")
+json_data_DK_FULL = data.frame(json_data_DK, stringsAsFactors = FALSE)
+
+json_data_DK_FULL <- select(json_data_DK_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_DK_FULL
+json_data_DK_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_DK_FULL$data.gasDayStart, '-', 3)
+json_data_DK_FULL$Maand_Dag <- paste(json_data_DK_FULL$Maand, json_data_DK_FULL$Dag, sep = "-")
+
+json_data_DK_FULL <- select(json_data_DK_FULL, -Maand, -Dag)
+
+json_data_DK_FILLTER <- select(json_data_DK_FULL, -data.name, -data.gasDayStart)
+
+DK <- spread(json_data_DK_FILLTER, key = Jaar, value = data.full)
+DK$`2011` <- as.numeric(DK$`2011`)
+DK$`2012` <- as.numeric(DK$`2012`)
+DK$`2013` <- as.numeric(DK$`2013`)
+DK$`2014` <- as.numeric(DK$`2014`)
+DK$`2015` <- as.numeric(DK$`2015`)
+DK$`2016` <- as.numeric(DK$`2016`)
+DK$`2017` <- as.numeric(DK$`2017`)
+DK$`2018` <- as.numeric(DK$`2018`)
+DK$`2019` <- as.numeric(DK$`2019`)
+DK$`2020` <- as.numeric(DK$`2020`)
+DK$`2021` <- as.numeric(DK$`2021`)
+DK$`2022` <- as.numeric(DK$`2022`)
+DK$`2023` <- as.numeric(DK$`2023`)
+
+
+DK$Historical_Min <- apply(DK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+DK$Historical_Max <- apply(DK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+DK$Historical_Mean <- apply(DK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+DK$Naam <- rep("DK", nrow(DK))
+
+DK
+
+# Schrijf DK data naar een CSV-ATstand
+write.csv(DK, file = "DK_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_ES <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=ES&page=1")
+json_data_ES_FULL = data.frame(json_data_ES, stringsAsFactors = FALSE)
+
+json_data_ES_FULL <- select(json_data_ES_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_ES_FULL
+json_data_ES_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_ES_FULL$data.gasDayStart, '-', 3)
+json_data_ES_FULL$Maand_Dag <- paste(json_data_ES_FULL$Maand, json_data_ES_FULL$Dag, sep = "-")
+
+json_data_ES_FULL <- select(json_data_ES_FULL, -Maand, -Dag)
+
+json_data_ES_FILLTER <- select(json_data_ES_FULL, -data.name, -data.gasDayStart)
+
+ES <- spread(json_data_ES_FILLTER, key = Jaar, value = data.full)
+ES$`2011` <- as.numeric(ES$`2011`)
+ES$`2012` <- as.numeric(ES$`2012`)
+ES$`2013` <- as.numeric(ES$`2013`)
+ES$`2014` <- as.numeric(ES$`2014`)
+ES$`2015` <- as.numeric(ES$`2015`)
+ES$`2016` <- as.numeric(ES$`2016`)
+ES$`2017` <- as.numeric(ES$`2017`)
+ES$`2018` <- as.numeric(ES$`2018`)
+ES$`2019` <- as.numeric(ES$`2019`)
+ES$`2020` <- as.numeric(ES$`2020`)
+ES$`2021` <- as.numeric(ES$`2021`)
+ES$`2022` <- as.numeric(ES$`2022`)
+ES$`2023` <- as.numeric(ES$`2023`)
+
+
+ES$Historical_Min <- apply(ES[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+ES$Historical_Max <- apply(ES[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+ES$Historical_Mean <- apply(ES[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+ES$Naam <- rep("ES", nrow(ES))
+
+ES
+
+# Schrijf ES data naar een CSV-ATstand
+write.csv(ES, file = "ES_FILTER.csv")
+```
+`
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_FR <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=FR&page=1")
+json_data_FR_FULL = data.frame(json_data_FR, stringsAsFactors = FALSE)
+
+json_data_FR_FULL <- select(json_data_FR_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_FR_FULL
+json_data_FR_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_FR_FULL$data.gasDayStart, '-', 3)
+json_data_FR_FULL$Maand_Dag <- paste(json_data_FR_FULL$Maand, json_data_FR_FULL$Dag, sep = "-")
+
+json_data_FR_FULL <- select(json_data_FR_FULL, -Maand, -Dag)
+
+json_data_FR_FILLTER <- select(json_data_FR_FULL, -data.name, -data.gasDayStart)
+
+FR <- spread(json_data_FR_FILLTER, key = Jaar, value = data.full)
+FR$`2011` <- as.numeric(FR$`2011`)
+FR$`2012` <- as.numeric(FR$`2012`)
+FR$`2013` <- as.numeric(FR$`2013`)
+FR$`2014` <- as.numeric(FR$`2014`)
+FR$`2015` <- as.numeric(FR$`2015`)
+FR$`2016` <- as.numeric(FR$`2016`)
+FR$`2017` <- as.numeric(FR$`2017`)
+FR$`2018` <- as.numeric(FR$`2018`)
+FR$`2019` <- as.numeric(FR$`2019`)
+FR$`2020` <- as.numeric(FR$`2020`)
+FR$`2021` <- as.numeric(FR$`2021`)
+FR$`2022` <- as.numeric(FR$`2022`)
+FR$`2023` <- as.numeric(FR$`2023`)
+
+
+FR$Historical_Min <- apply(FR[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+FR$Historical_Max <- apply(FR[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+FR$Historical_Mean <- apply(FR[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+FR$Naam <- rep("FR", nrow(FR))
+
+FR
+
+# Schrijf FR data naar een CSV-ATstand
+write.csv(FR, file = "FR_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_GB <- fromJSON("https://agsi.gie.eu/api?GBom=2011-01-01&size=5000&country=GB&page=1")
+json_data_GB_FULL = data.frame(json_data_GB, stringsAsFactors = FALSE)
+
+json_data_GB_FULL <- select(json_data_GB_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_GB_FULL
+json_data_GB_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_GB_FULL$data.gasDayStart, '-', 3)
+json_data_GB_FULL$Maand_Dag <- paste(json_data_GB_FULL$Maand, json_data_GB_FULL$Dag, sep = "-")
+
+json_data_GB_FULL <- select(json_data_GB_FULL, -Maand, -Dag)
+
+json_data_GB_FILLTER <- select(json_data_GB_FULL, -data.name, -data.gasDayStart)
+
+GB <- spread(json_data_GB_FILLTER, key = Jaar, value = data.full)
+GB$`2011` <- as.numeric(GB$`2011`)
+GB$`2012` <- as.numeric(GB$`2012`)
+GB$`2013` <- as.numeric(GB$`2013`)
+GB$`2014` <- as.numeric(GB$`2014`)
+GB$`2015` <- as.numeric(GB$`2015`)
+GB$`2016` <- as.numeric(GB$`2016`)
+GB$`2017` <- as.numeric(GB$`2017`)
+GB$`2018` <- as.numeric(GB$`2018`)
+GB$`2019` <- as.numeric(GB$`2019`)
+GB$`2020` <- as.numeric(GB$`2020`)
+GB$`2021` <- as.numeric(GB$`2021`)
+GB$`2022` <- as.numeric(GB$`2022`)
+GB$`2023` <- as.numeric(GB$`2023`)
+
+
+GB$Historical_Min <- apply(GB[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+GB$Historical_Max <- apply(GB[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+GB$Historical_Mean <- apply(GB[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+GB$Naam <- rep("GB", nrow(GB))
+
+GB
+
+# Schrijf GB data naar een CSV-ATstand
+write.csv(GB, file = "GB_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_HR <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=HR&page=1")
+json_data_HR_FULL = data.frame(json_data_HR, stringsAsFactors = FALSE)
+
+json_data_HR_FULL <- select(json_data_HR_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_HR_FULL
+json_data_HR_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_HR_FULL$data.gasDayStart, '-', 3)
+json_data_HR_FULL$Maand_Dag <- paste(json_data_HR_FULL$Maand, json_data_HR_FULL$Dag, sep = "-")
+
+json_data_HR_FULL <- select(json_data_HR_FULL, -Maand, -Dag)
+
+json_data_HR_FILLTER <- select(json_data_HR_FULL, -data.name, -data.gasDayStart)
+
+HR <- spread(json_data_HR_FILLTER, key = Jaar, value = data.full)
+HR$`2011` <- as.numeric(HR$`2011`)
+HR$`2012` <- as.numeric(HR$`2012`)
+HR$`2013` <- as.numeric(HR$`2013`)
+HR$`2014` <- as.numeric(HR$`2014`)
+HR$`2015` <- as.numeric(HR$`2015`)
+HR$`2016` <- as.numeric(HR$`2016`)
+HR$`2017` <- as.numeric(HR$`2017`)
+HR$`2018` <- as.numeric(HR$`2018`)
+HR$`2019` <- as.numeric(HR$`2019`)
+HR$`2020` <- as.numeric(HR$`2020`)
+HR$`2021` <- as.numeric(HR$`2021`)
+HR$`2022` <- as.numeric(HR$`2022`)
+HR$`2023` <- as.numeric(HR$`2023`)
+
+
+HR$Historical_Min <- apply(HR[, c("2015", "2016","2017","2018","2019","2020")], 1, min)
+HR$Historical_Max <- apply(HR[, c("2015", "2016","2017","2018","2019","2020")], 1, max)
+HR$Historical_Mean <- apply(HR[, c("2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+HR$Naam <- rep("HR", nrow(HR))
+
+HR
+
+# Schrijf HR data naar een CSV-ATstand
+write.csv(HR, file = "HR_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_HU <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=HU&page=1")
+json_data_HU_FULL = data.frame(json_data_HU, stringsAsFactors = FALSE)
+
+json_data_HU_FULL <- select(json_data_HU_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_HU_FULL
+json_data_HU_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_HU_FULL$data.gasDayStart, '-', 3)
+json_data_HU_FULL$Maand_Dag <- paste(json_data_HU_FULL$Maand, json_data_HU_FULL$Dag, sep = "-")
+
+json_data_HU_FULL <- select(json_data_HU_FULL, -Maand, -Dag)
+
+json_data_HU_FILLTER <- select(json_data_HU_FULL, -data.name, -data.gasDayStart)
+
+HU <- spread(json_data_HU_FILLTER, key = Jaar, value = data.full)
+HU$`2011` <- as.numeric(HU$`2011`)
+HU$`2012` <- as.numeric(HU$`2012`)
+HU$`2013` <- as.numeric(HU$`2013`)
+HU$`2014` <- as.numeric(HU$`2014`)
+HU$`2015` <- as.numeric(HU$`2015`)
+HU$`2016` <- as.numeric(HU$`2016`)
+HU$`2017` <- as.numeric(HU$`2017`)
+HU$`2018` <- as.numeric(HU$`2018`)
+HU$`2019` <- as.numeric(HU$`2019`)
+HU$`2020` <- as.numeric(HU$`2020`)
+HU$`2021` <- as.numeric(HU$`2021`)
+HU$`2022` <- as.numeric(HU$`2022`)
+HU$`2023` <- as.numeric(HU$`2023`)
+
+
+HU$Historical_Min <- apply(HU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+HU$Historical_Max <- apply(HU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+HU$Historical_Mean <- apply(HU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+HU$Naam <- rep("HU", nrow(HU))
+
+HU
+
+# ScHUijf HU data naar een CSV-ATstand
+write.csv(HU, file = "HU_FILTER.csv")
+```
+
+
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_IT <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=IT&page=1")
+json_data_IT_FULL = data.frame(json_data_IT, stringsAsFactors = FALSE)
+
+json_data_IT_FULL <- select(json_data_IT_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_IT_FULL
+json_data_IT_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_IT_FULL$data.gasDayStart, '-', 3)
+json_data_IT_FULL$Maand_Dag <- paste(json_data_IT_FULL$Maand, json_data_IT_FULL$Dag, sep = "-")
+
+json_data_IT_FULL <- select(json_data_IT_FULL, -Maand, -Dag)
+
+json_data_IT_FILLTER <- select(json_data_IT_FULL, -data.name, -data.gasDayStart)
+
+IT <- spread(json_data_IT_FILLTER, key = Jaar, value = data.full)
+IT$`2011` <- as.numeric(IT$`2011`)
+IT$`2012` <- as.numeric(IT$`2012`)
+IT$`2013` <- as.numeric(IT$`2013`)
+IT$`2014` <- as.numeric(IT$`2014`)
+IT$`2015` <- as.numeric(IT$`2015`)
+IT$`2016` <- as.numeric(IT$`2016`)
+IT$`2017` <- as.numeric(IT$`2017`)
+IT$`2018` <- as.numeric(IT$`2018`)
+IT$`2019` <- as.numeric(IT$`2019`)
+IT$`2020` <- as.numeric(IT$`2020`)
+IT$`2021` <- as.numeric(IT$`2021`)
+IT$`2022` <- as.numeric(IT$`2022`)
+IT$`2023` <- as.numeric(IT$`2023`)
+
+
+IT$Historical_Min <- apply(IT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+IT$Historical_Max <- apply(IT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+IT$Historical_Mean <- apply(IT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+IT$Naam <- rep("IT", nrow(IT))
+
+IT
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(IT, file = "IT_FILTER.csv")
+```
+
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_LV <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=LV&page=1")
+json_data_LV_FULL = data.frame(json_data_LV, stringsAsFactors = FALSE)
+
+json_data_LV_FULL <- select(json_data_LV_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_LV_FULL
+json_data_LV_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_LV_FULL$data.gasDayStart, '-', 3)
+json_data_LV_FULL$Maand_Dag <- paste(json_data_LV_FULL$Maand, json_data_LV_FULL$Dag, sep = "-")
+
+json_data_LV_FULL <- select(json_data_LV_FULL, -Maand, -Dag)
+
+json_data_LV_FILLTER <- select(json_data_LV_FULL, -data.name, -data.gasDayStart)
+
+LV <- spread(json_data_LV_FILLTER, key = Jaar, value = data.full)
+LV$`2011` <- as.numeric(LV$`2011`)
+LV$`2012` <- as.numeric(LV$`2012`)
+LV$`2013` <- as.numeric(LV$`2013`)
+LV$`2014` <- as.numeric(LV$`2014`)
+LV$`2015` <- as.numeric(LV$`2015`)
+LV$`2016` <- as.numeric(LV$`2016`)
+LV$`2017` <- as.numeric(LV$`2017`)
+LV$`2018` <- as.numeric(LV$`2018`)
+LV$`2019` <- as.numeric(LV$`2019`)
+LV$`2020` <- as.numeric(LV$`2020`)
+LV$`2021` <- as.numeric(LV$`2021`)
+LV$`2022` <- as.numeric(LV$`2022`)
+LV$`2023` <- as.numeric(LV$`2023`)
+
+
+LV$Historical_Min <- apply(LV[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+LV$Historical_Max <- apply(LV[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+LV$Historical_Mean <- apply(LV[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+LV$Naam <- rep("LV", nrow(LV))
+
+LV
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(LV, file = "LV_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_NL <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=NL&page=1")
+json_data_NL_FULL = data.frame(json_data_NL, stringsAsFactors = FALSE)
+
+json_data_NL_FULL <- select(json_data_NL_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_NL_FULL
+json_data_NL_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_NL_FULL$data.gasDayStart, '-', 3)
+json_data_NL_FULL$Maand_Dag <- paste(json_data_NL_FULL$Maand, json_data_NL_FULL$Dag, sep = "-")
+
+json_data_NL_FULL <- select(json_data_NL_FULL, -Maand, -Dag)
+
+json_data_NL_FILLTER <- select(json_data_NL_FULL, -data.name, -data.gasDayStart)
+
+NL <- spread(json_data_NL_FILLTER, key = Jaar, value = data.full)
+NL$`2011` <- as.numeric(NL$`2011`)
+NL$`2012` <- as.numeric(NL$`2012`)
+NL$`2013` <- as.numeric(NL$`2013`)
+NL$`2014` <- as.numeric(NL$`2014`)
+NL$`2015` <- as.numeric(NL$`2015`)
+NL$`2016` <- as.numeric(NL$`2016`)
+NL$`2017` <- as.numeric(NL$`2017`)
+NL$`2018` <- as.numeric(NL$`2018`)
+NL$`2019` <- as.numeric(NL$`2019`)
+NL$`2020` <- as.numeric(NL$`2020`)
+NL$`2021` <- as.numeric(NL$`2021`)
+NL$`2022` <- as.numeric(NL$`2022`)
+NL$`2023` <- as.numeric(NL$`2023`)
+
+
+NL$Historical_Min <- apply(NL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+NL$Historical_Max <- apply(NL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+NL$Historical_Mean <- apply(NL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+NL$Naam <- rep("NL", nrow(NL))
+
+NL
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(NL, file = "NL_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_PL <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=PL&page=1")
+json_data_PL_FULL = data.frame(json_data_PL, stringsAsFactors = FALSE)
+
+json_data_PL_FULL <- select(json_data_PL_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_PL_FULL
+json_data_PL_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_PL_FULL$data.gasDayStart, '-', 3)
+json_data_PL_FULL$Maand_Dag <- paste(json_data_PL_FULL$Maand, json_data_PL_FULL$Dag, sep = "-")
+
+json_data_PL_FULL <- select(json_data_PL_FULL, -Maand, -Dag)
+
+json_data_PL_FILLTER <- select(json_data_PL_FULL, -data.name, -data.gasDayStart)
+
+PL <- spread(json_data_PL_FILLTER, key = Jaar, value = data.full)
+PL$`2011` <- as.numeric(PL$`2011`)
+PL$`2012` <- as.numeric(PL$`2012`)
+PL$`2013` <- as.numeric(PL$`2013`)
+PL$`2014` <- as.numeric(PL$`2014`)
+PL$`2015` <- as.numeric(PL$`2015`)
+PL$`2016` <- as.numeric(PL$`2016`)
+PL$`2017` <- as.numeric(PL$`2017`)
+PL$`2018` <- as.numeric(PL$`2018`)
+PL$`2019` <- as.numeric(PL$`2019`)
+PL$`2020` <- as.numeric(PL$`2020`)
+PL$`2021` <- as.numeric(PL$`2021`)
+PL$`2022` <- as.numeric(PL$`2022`)
+PL$`2023` <- as.numeric(PL$`2023`)
+
+
+PL$Historical_Min <- apply(PL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+PL$Historical_Max <- apply(PL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+PL$Historical_Mean <- apply(PL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+PL$Naam <- rep("PL", nrow(PL))
+
+PL
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(PL, file = "PL_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_PT <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=PT&page=1")
+json_data_PT_FULL = data.frame(json_data_PT, stringsAsFactors = FALSE)
+
+json_data_PT_FULL <- select(json_data_PT_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_PT_FULL
+json_data_PT_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_PT_FULL$data.gasDayStart, '-', 3)
+json_data_PT_FULL$Maand_Dag <- paste(json_data_PT_FULL$Maand, json_data_PT_FULL$Dag, sep = "-")
+
+json_data_PT_FULL <- select(json_data_PT_FULL, -Maand, -Dag)
+
+json_data_PT_FILLTER <- select(json_data_PT_FULL, -data.name, -data.gasDayStart)
+
+PT <- spread(json_data_PT_FILLTER, key = Jaar, value = data.full)
+PT$`2011` <- as.numeric(PT$`2011`)
+PT$`2012` <- as.numeric(PT$`2012`)
+PT$`2013` <- as.numeric(PT$`2013`)
+PT$`2014` <- as.numeric(PT$`2014`)
+PT$`2015` <- as.numeric(PT$`2015`)
+PT$`2016` <- as.numeric(PT$`2016`)
+PT$`2017` <- as.numeric(PT$`2017`)
+PT$`2018` <- as.numeric(PT$`2018`)
+PT$`2019` <- as.numeric(PT$`2019`)
+PT$`2020` <- as.numeric(PT$`2020`)
+PT$`2021` <- as.numeric(PT$`2021`)
+PT$`2022` <- as.numeric(PT$`2022`)
+PT$`2023` <- as.numeric(PT$`2023`)
+
+
+PT$Historical_Min <- apply(PT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+PT$Historical_Max <- apply(PT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+PT$Historical_Mean <- apply(PT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+PT$Naam <- rep("PT", nrow(PT))
+
+PT
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(PT, file = "PT_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_RO <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=RO&page=1")
+json_data_RO_FULL = data.frame(json_data_RO, stringsAsFactors = FALSE)
+
+json_data_RO_FULL <- select(json_data_RO_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_RO_FULL
+json_data_RO_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_RO_FULL$data.gasDayStart, '-', 3)
+json_data_RO_FULL$Maand_Dag <- paste(json_data_RO_FULL$Maand, json_data_RO_FULL$Dag, sep = "-")
+
+json_data_RO_FULL <- select(json_data_RO_FULL, -Maand, -Dag)
+
+json_data_RO_FILLTER <- select(json_data_RO_FULL, -data.name, -data.gasDayStart)
+
+RO <- spread(json_data_RO_FILLTER, key = Jaar, value = data.full)
+RO$`2011` <- as.numeric(RO$`2011`)
+RO$`2012` <- as.numeric(RO$`2012`)
+RO$`2013` <- as.numeric(RO$`2013`)
+RO$`2014` <- as.numeric(RO$`2014`)
+RO$`2015` <- as.numeric(RO$`2015`)
+RO$`2016` <- as.numeric(RO$`2016`)
+RO$`2017` <- as.numeric(RO$`2017`)
+RO$`2018` <- as.numeric(RO$`2018`)
+RO$`2019` <- as.numeric(RO$`2019`)
+RO$`2020` <- as.numeric(RO$`2020`)
+RO$`2021` <- as.numeric(RO$`2021`)
+RO$`2022` <- as.numeric(RO$`2022`)
+RO$`2023` <- as.numeric(RO$`2023`)
+
+
+RO$Historical_Min <- apply(RO[, c("2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+RO$Historical_Max <- apply(RO[, c("2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+RO$Historical_Mean <- apply(RO[, c("2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+RO$Naam <- rep("RO", nrow(RO))
+
+RO
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(RO, file = "RO_FILTER.csv")
+```
+
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_SE <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=SE&page=1")
+json_data_SE_FULL = data.frame(json_data_SE, stringsAsFactors = FALSE)
+
+json_data_SE_FULL <- select(json_data_SE_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_SE_FULL
+json_data_SE_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_SE_FULL$data.gasDayStart, '-', 3)
+json_data_SE_FULL$Maand_Dag <- paste(json_data_SE_FULL$Maand, json_data_SE_FULL$Dag, sep = "-")
+
+json_data_SE_FULL <- select(json_data_SE_FULL, -Maand, -Dag)
+
+json_data_SE_FILLTER <- select(json_data_SE_FULL, -data.name, -data.gasDayStart)
+
+SE <- spread(json_data_SE_FILLTER, key = Jaar, value = data.full)
+SE$`2011` <- as.numeric(SE$`2011`)
+SE$`2012` <- as.numeric(SE$`2012`)
+SE$`2013` <- as.numeric(SE$`2013`)
+SE$`2014` <- as.numeric(SE$`2014`)
+SE$`2015` <- as.numeric(SE$`2015`)
+SE$`2016` <- as.numeric(SE$`2016`)
+SE$`2017` <- as.numeric(SE$`2017`)
+SE$`2018` <- as.numeric(SE$`2018`)
+SE$`2019` <- as.numeric(SE$`2019`)
+SE$`2020` <- as.numeric(SE$`2020`)
+SE$`2021` <- as.numeric(SE$`2021`)
+SE$`2022` <- as.numeric(SE$`2022`)
+SE$`2023` <- as.numeric(SE$`2023`)
+
+
+SE$Historical_Min <- apply(SE[, c("2018","2019","2020")], 1, min)
+SE$Historical_Max <- apply(SE[, c("2018","2019","2020")], 1, max)
+SE$Historical_Mean <- apply(SE[, c("2018","2019","2020", "2021", "2022")], 1, mean)
+
+SE$Naam <- rep("SE", nrow(SE))
+
+SE
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(SE, file = "SE_FILTER.csv")
+```
+
+```{r}
+# Lees het JSON-ATstand in R
+json_data_SK <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&country=SK&page=1")
+json_data_SK_FULL = data.frame(json_data_SK, stringsAsFactors = FALSE)
+
+json_data_SK_FULL <- select(json_data_SK_FULL, -last_page, -total, -dataset, -gas_day, -data.code, -data.url, -data.gasInStorage, -data.consumption, -data.consumptionFull, -data.injection, -data.withdrawal, -data.withdrawal, -data.netWithdrawal, -data.netWithdrawal, -data.workingGasVolume, -data.injectionCapacity, -data.withdrawalCapacity, -data.status, -data.trend, -data.info)
+
+json_data_SK_FULL
+json_data_SK_FULL[c('Jaar', 'Maand', 'Dag')] <- str_split_fixed(json_data_SK_FULL$data.gasDayStart, '-', 3)
+json_data_SK_FULL$Maand_Dag <- paste(json_data_SK_FULL$Maand, json_data_SK_FULL$Dag, sep = "-")
+
+json_data_SK_FULL <- select(json_data_SK_FULL, -Maand, -Dag)
+
+json_data_SK_FILLTER <- select(json_data_SK_FULL, -data.name, -data.gasDayStart)
+
+SK <- spread(json_data_SK_FILLTER, key = Jaar, value = data.full)
+SK$`2011` <- as.numeric(SK$`2011`)
+SK$`2012` <- as.numeric(SK$`2012`)
+SK$`2013` <- as.numeric(SK$`2013`)
+SK$`2014` <- as.numeric(SK$`2014`)
+SK$`2015` <- as.numeric(SK$`2015`)
+SK$`2016` <- as.numeric(SK$`2016`)
+SK$`2017` <- as.numeric(SK$`2017`)
+SK$`2018` <- as.numeric(SK$`2018`)
+SK$`2019` <- as.numeric(SK$`2019`)
+SK$`2020` <- as.numeric(SK$`2020`)
+SK$`2021` <- as.numeric(SK$`2021`)
+SK$`2022` <- as.numeric(SK$`2022`)
+SK$`2023` <- as.numeric(SK$`2023`)
+
+
+SK$Historical_Min <- apply(SK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
+SK$Historical_Max <- apply(SK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
+SK$Historical_Mean <- apply(SK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+
+SK$Naam <- rep("SK", nrow(SK))
+
+SK
+
+# ScIEijf IE data naar een CSV-ATstand
+write.csv(SK, file = "SK_FILTER.csv")
+```
+
+```{r}
+
+Totaal <- rbind(EU, BE, AT, BG, CZ, DE, DK, ES, FR, GB, HR, IT, LV, NL, PL, PT, RO, SE, SK)
+
+write.csv(Totaal, file = "Totaal.csv")
+
+```
+
