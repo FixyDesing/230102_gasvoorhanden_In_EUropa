@@ -896,5 +896,22 @@ Totaal <- rbind(EU, BE, AT, BG, CZ, DE, DK, ES, FR, GB, HR, IT, LV, NL, PL, PT, 
 
 write.csv(Totaal, file = "Totaal.csv")
 
+# Install git2r package
+install.packages("git2r")
+
+# Load git2r library
+library(git2r)
+
+# Initialize git repository
+repo <- init("path/to/your/folder")
+
+# Add all files to the repository
+add(repo, ".")
+
+# Commit changes with a message
+commit(repo, message = "Automated commit")
+
+# Push to GitHub
+push(repo, "origin", "master")
 ```
 
