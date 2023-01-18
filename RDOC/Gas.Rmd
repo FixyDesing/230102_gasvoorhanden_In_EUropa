@@ -896,20 +896,16 @@ Totaal <- rbind(EU, BE, AT, BG, CZ, DE, DK, ES, FR, GB, HR, IT, LV, NL, PL, PT, 
 
 write.csv(Totaal, file = "Totaal.csv")
 
-# Install git2r package
-install.packages("git2r")
-
-# Load git2r library
 library(git2r)
 
 # Initialize git repository
-repo <- init("path/to/your/folder")
+repo <- init("C:/Users/reve03/OneDrive - Mediahuis/Documents/PRIV/PORTFOLIO/R/230102_gasvoorhanden_In_EUropa")
 
 # Add all files to the repository
-add(repo, ".")
+add(repo, "SK_FILTER.csv")
 
 # Commit changes with a message
-commit(repo, message = "Automated commit")
+commit(repo, message = "Automated commit2")
 
 # Push to GitHub
 push(repo, "origin", "master")
