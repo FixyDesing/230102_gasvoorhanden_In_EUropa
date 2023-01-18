@@ -14,7 +14,7 @@ library(jsonlite)
 library(dplyr)
 library(stringr)
 library(tidyr)
-
+library(usethis)
 
 # Lees het JSON-bestand in R
 json_data_EU <- fromJSON("https://agsi.gie.eu/api?from=2011-01-01&size=5000&continent=EU&page=1")
@@ -49,8 +49,10 @@ EU$`2023` <- as.numeric(EU$`2023`)
 EU$Historical_Min <- apply(EU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 EU$Historical_Max <- apply(EU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 EU$Historical_Mean <- apply(EU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
+EU$Historical_Mean <- round(EU$Historical_Mean, 2)
+EU <- subset(EU, Maand_Dag != "02-29")
 
-EU$Naam <- rep("EU", nrow(EU))
+EU$Naam <- rep("Europeese Unie", nrow(EU))
 
 EU
 
@@ -94,7 +96,8 @@ BE$`2023` <- as.numeric(BE$`2023`)
 BE$Historical_Min <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 BE$Historical_Max <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 BE$Historical_Mean <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
+BE$Historical_Mean <- round(BE$Historical_Mean, 2)
+BE <- subset(BE, Maand_Dag != "02-29")
 BE$Naam <- rep("BE", nrow(BE))
 
 
@@ -138,7 +141,8 @@ AT$`2023` <- as.numeric(AT$`2023`)
 AT$Historical_Min <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 AT$Historical_Max <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 AT$Historical_Mean <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
+AT$Historical_Mean <- round(AT$Historical_Mean, 2)
+AT <- subset(AT, Maand_Dag != "02-29")
 AT$Naam <- rep("AT", nrow(AT))
 
 
@@ -183,7 +187,8 @@ BG$`2023` <- as.numeric(BG$`2023`)
 BG$Historical_Min <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 BG$Historical_Max <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 BG$Historical_Mean <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
+BG$Historical_Mean <- round(BG$Historical_Mean, 2)
+BG <- subset(BG, Maand_Dag != "02-29")
 BG$Naam <- rep("BG", nrow(BG))
 
 BG
