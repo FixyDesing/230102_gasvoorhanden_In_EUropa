@@ -98,7 +98,7 @@ BE$Historical_Max <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016",
 BE$Historical_Mean <- apply(BE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
 BE$Historical_Mean <- round(BE$Historical_Mean, 2)
 BE <- subset(BE, Maand_Dag != "02-29")
-BE$Naam <- rep("BE", nrow(BE))
+BE$Naam <- rep("België", nrow(BE))
 
 
 BE
@@ -143,7 +143,7 @@ AT$Historical_Max <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016",
 AT$Historical_Mean <- apply(AT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
 AT$Historical_Mean <- round(AT$Historical_Mean, 2)
 AT <- subset(AT, Maand_Dag != "02-29")
-AT$Naam <- rep("AT", nrow(AT))
+AT$Naam <- rep("Oostenrijk", nrow(AT))
 
 
 AT
@@ -189,7 +189,7 @@ BG$Historical_Max <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016",
 BG$Historical_Mean <- apply(BG[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
 BG$Historical_Mean <- round(BG$Historical_Mean, 2)
 BG <- subset(BG, Maand_Dag != "02-29")
-BG$Naam <- rep("BG", nrow(BG))
+BG$Naam <- rep("Bulgarije", nrow(BG))
 
 BG
 
@@ -231,8 +231,9 @@ CZ$`2023` <- as.numeric(CZ$`2023`)
 CZ$Historical_Min <- apply(CZ[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 CZ$Historical_Max <- apply(CZ[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 CZ$Historical_Mean <- apply(CZ[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-CZ$Naam <- rep("CZ", nrow(CZ))
+CZ$Historical_Mean <- round(CZ$Historical_Mean, 2)
+CZ <- subset(CZ, Maand_Dag != "02-29")
+CZ$Naam <- rep("Tsjechië", nrow(CZ))
 
 CZ
 
@@ -274,8 +275,9 @@ DE$`2023` <- as.numeric(DE$`2023`)
 DE$Historical_Min <- apply(DE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 DE$Historical_Max <- apply(DE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 DE$Historical_Mean <- apply(DE[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-DE$Naam <- rep("DE", nrow(DE))
+DE$Historical_Mean <- round(DE$Historical_Mean, 2)
+DE <- subset(DE, Maand_Dag != "02-29")
+DE$Naam <- rep("Duitsland", nrow(DE))
 
 DE
 
@@ -317,8 +319,9 @@ DK$`2023` <- as.numeric(DK$`2023`)
 DK$Historical_Min <- apply(DK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 DK$Historical_Max <- apply(DK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 DK$Historical_Mean <- apply(DK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-DK$Naam <- rep("DK", nrow(DK))
+DK$Historical_Mean <- round(DK$Historical_Mean, 2)
+DK <- subset(DK, Maand_Dag != "02-29")
+DK$Naam <- rep("Denemarken", nrow(DK))
 
 DK
 
@@ -360,8 +363,9 @@ ES$`2023` <- as.numeric(ES$`2023`)
 ES$Historical_Min <- apply(ES[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 ES$Historical_Max <- apply(ES[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 ES$Historical_Mean <- apply(ES[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-ES$Naam <- rep("ES", nrow(ES))
+ES$Historical_Mean <- round(ES$Historical_Mean, 2)
+ES <- subset(ES, Maand_Dag != "02-29")
+ES$Naam <- rep("Spanje", nrow(ES))
 
 ES
 
@@ -404,8 +408,9 @@ FR$`2023` <- as.numeric(FR$`2023`)
 FR$Historical_Min <- apply(FR[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 FR$Historical_Max <- apply(FR[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 FR$Historical_Mean <- apply(FR[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-FR$Naam <- rep("FR", nrow(FR))
+FR$Historical_Mean <- round(FR$Historical_Mean, 2)
+FR <- subset(FR, Maand_Dag != "02-29")
+FR$Naam <- rep("Frankrijk", nrow(FR))
 
 FR
 
@@ -447,8 +452,9 @@ GB$`2023` <- as.numeric(GB$`2023`)
 GB$Historical_Min <- apply(GB[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 GB$Historical_Max <- apply(GB[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 GB$Historical_Mean <- apply(GB[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-GB$Naam <- rep("GB", nrow(GB))
+GB$Historical_Mean <- round(GB$Historical_Mean, 2)
+GB <- subset(GB, Maand_Dag != "02-29")
+GB$Naam <- rep("United Kingdom", nrow(GB))
 
 GB
 
@@ -490,8 +496,9 @@ HR$`2023` <- as.numeric(HR$`2023`)
 HR$Historical_Min <- apply(HR[, c("2015", "2016","2017","2018","2019","2020")], 1, min)
 HR$Historical_Max <- apply(HR[, c("2015", "2016","2017","2018","2019","2020")], 1, max)
 HR$Historical_Mean <- apply(HR[, c("2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-HR$Naam <- rep("HR", nrow(HR))
+HR$Historical_Mean <- round(HR$Historical_Mean, 2)
+HR <- subset(HR, Maand_Dag != "02-29")
+HR$Naam <- rep("Hongarije", nrow(HR))
 
 HR
 
@@ -533,8 +540,9 @@ HU$`2023` <- as.numeric(HU$`2023`)
 HU$Historical_Min <- apply(HU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 HU$Historical_Max <- apply(HU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 HU$Historical_Mean <- apply(HU[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-HU$Naam <- rep("HU", nrow(HU))
+HU$Historical_Mean <- round(HU$Historical_Mean, 2)
+HU <- subset(HU, Maand_Dag != "02-29")
+HU$Naam <- rep("Hongarije", nrow(HU))
 
 HU
 
@@ -578,8 +586,9 @@ IT$`2023` <- as.numeric(IT$`2023`)
 IT$Historical_Min <- apply(IT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 IT$Historical_Max <- apply(IT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 IT$Historical_Mean <- apply(IT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-IT$Naam <- rep("IT", nrow(IT))
+IT$Historical_Mean <- round(IT$Historical_Mean, 2)
+IT <- subset(IT, Maand_Dag != "02-29")
+IT$Naam <- rep("Italië", nrow(IT))
 
 IT
 
@@ -622,8 +631,9 @@ LV$`2023` <- as.numeric(LV$`2023`)
 LV$Historical_Min <- apply(LV[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 LV$Historical_Max <- apply(LV[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 LV$Historical_Mean <- apply(LV[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-LV$Naam <- rep("LV", nrow(LV))
+LV$Historical_Mean <- round(LV$Historical_Mean, 2)
+LV <- subset(LV, Maand_Dag != "02-29")
+LV$Naam <- rep("Letland", nrow(LV))
 
 LV
 
@@ -665,8 +675,9 @@ NL$`2023` <- as.numeric(NL$`2023`)
 NL$Historical_Min <- apply(NL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 NL$Historical_Max <- apply(NL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 NL$Historical_Mean <- apply(NL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-NL$Naam <- rep("NL", nrow(NL))
+NL$Historical_Mean <- round(NL$Historical_Mean, 2)
+NL <- subset(NL, Maand_Dag != "02-29")
+NL$Naam <- rep("Nederland", nrow(NL))
 
 NL
 
@@ -708,8 +719,9 @@ PL$`2023` <- as.numeric(PL$`2023`)
 PL$Historical_Min <- apply(PL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 PL$Historical_Max <- apply(PL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 PL$Historical_Mean <- apply(PL[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-PL$Naam <- rep("PL", nrow(PL))
+PL$Historical_Mean <- round(PL$Historical_Mean, 2)
+PL <- subset(PL, Maand_Dag != "02-29")
+PL$Naam <- rep("Polen", nrow(PL))
 
 PL
 
@@ -751,8 +763,9 @@ PT$`2023` <- as.numeric(PT$`2023`)
 PT$Historical_Min <- apply(PT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 PT$Historical_Max <- apply(PT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 PT$Historical_Mean <- apply(PT[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-PT$Naam <- rep("PT", nrow(PT))
+PT$Historical_Mean <- round(PT$Historical_Mean, 2)
+PT <- subset(PT, Maand_Dag != "02-29")
+PT$Naam <- rep("Portugal", nrow(PT))
 
 PT
 
@@ -794,8 +807,9 @@ RO$`2023` <- as.numeric(RO$`2023`)
 RO$Historical_Min <- apply(RO[, c("2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 RO$Historical_Max <- apply(RO[, c("2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 RO$Historical_Mean <- apply(RO[, c("2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-RO$Naam <- rep("RO", nrow(RO))
+RO$Historical_Mean <- round(RO$Historical_Mean, 2)
+RO <- subset(RO, Maand_Dag != "02-29")
+RO$Naam <- rep("Roemenië", nrow(RO))
 
 RO
 
@@ -838,8 +852,9 @@ SE$`2023` <- as.numeric(SE$`2023`)
 SE$Historical_Min <- apply(SE[, c("2018","2019","2020")], 1, min)
 SE$Historical_Max <- apply(SE[, c("2018","2019","2020")], 1, max)
 SE$Historical_Mean <- apply(SE[, c("2018","2019","2020", "2021", "2022")], 1, mean)
-
-SE$Naam <- rep("SE", nrow(SE))
+SE$Historical_Mean <- round(SE$Historical_Mean, 2)
+SE <- subset(SE, Maand_Dag != "02-29")
+SE$Naam <- rep("Zweden", nrow(SE))
 
 SE
 
@@ -881,8 +896,9 @@ SK$`2023` <- as.numeric(SK$`2023`)
 SK$Historical_Min <- apply(SK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, min)
 SK$Historical_Max <- apply(SK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020")], 1, max)
 SK$Historical_Mean <- apply(SK[, c("2011", "2012", "2013","2014", "2015", "2016","2017","2018","2019","2020", "2021", "2022")], 1, mean)
-
-SK$Naam <- rep("SK", nrow(SK))
+SK$Historical_Mean <- round(SK$Historical_Mean, 2)
+SK <- subset(SK, Maand_Dag != "02-29")
+SK$Naam <- rep("Slowakije", nrow(SK))
 
 SK
 
@@ -896,13 +912,29 @@ Totaal <- rbind(EU, BE, AT, BG, CZ, DE, DK, ES, FR, GB, HR, IT, LV, NL, PL, PT, 
 
 write.csv(Totaal, file = "Totaal.csv")
 
+
+# Load usethis library
+library(usethis)
+
+# Create git repository
+create_git_repo()
+
+# Add files to git
+use_git()
+
+# Commit changes with a message
+git_commit(message = "Automated commit")
+
+# Push to GitHub
+git_push()
+
 library(git2r)
 
 # Initialize git repository
 repo <- init("C:/Users/reve03/OneDrive - Mediahuis/Documents/PRIV/PORTFOLIO/R/230102_gasvoorhanden_In_EUropa")
 
 # Add all files to the repository
-add(repo, "SK_FILTER.csv")
+add(repo, "230102_gasvoorhanden_In_EUropa.Rproj")
 
 # Commit changes with a message
 commit(repo, message = "Automated commit2")
